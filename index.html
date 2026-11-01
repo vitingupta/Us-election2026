@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How US elections work</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1b2430;--mute:#5b6675;--line:#d9d6cd;--dem:#2159b8;--rep:#c0392b;--vac:#b9b6ac;--acc:#1b2430;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121821;--card:#1b2430;--ink:#eef1f5;--mute:#a3adbb;--line:#33404f;--dem:#5b93f0;--rep:#ee6c5c;--vac:#566273;--acc:#eef1f5}}
+:root[data-theme="dark"]{--bg:#121821;--card:#1b2430;--ink:#eef1f5;--mute:#a3adbb;--line:#33404f;--dem:#5b93f0;--rep:#ee6c5c;--vac:#566273;--acc:#eef1f5}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 56px}
+h1,h2{font-family:Georgia,"Times New Roman",serif;line-height:1.2}
+h1{font-size:2rem;margin:8px 0 6px}
+h2{font-size:1.35rem;margin:36px 0 10px}
+p{margin:0 0 10px}
+.sub{color:var(--mute);margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+.row{margin:14px 0 4px}
+.row b{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+:root{--demT:#2159b8;--repT:#b3392c;--tie:#6c4f9c}
+.mh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin:6px 0 8px}
+.tot{font-weight:700}.td{color:var(--dem)}.tr{color:var(--rep)}
+.map{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;margin:6px 0 6px}
+.t{aspect-ratio:1;border-radius:4px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;font-size:11px;font-weight:700;background:var(--tie)}
+.t small{font-size:8px;font-weight:600;opacity:.9}
+.t.dm{background:var(--demT)}.t.rm{background:var(--repT)}
+.usmap{display:block;width:100%;min-width:660px;height:auto}
+.st{stroke:var(--card);stroke-width:1.4;stroke-linejoin:round}
+.st.dm{fill:var(--demT)}.st.rm{fill:var(--repT)}.st.tie{fill:var(--tie)}
+.n{fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:central;pointer-events:none;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.bar{display:flex;height:30px;border-radius:6px;overflow:hidden;margin:6px 0;position:relative;background:var(--vac)}
+.bar i{display:block;height:100%}
+.d{background:var(--dem)}.r{background:var(--rep)}
+.mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--acc)}
+.leg{font-size:.88rem;color:var(--mute)}
+.odds{display:flex;gap:12px;flex-wrap:wrap}
+.odds>div{flex:1 1 240px}
+.big{font-family:Georgia,serif;font-size:2.4rem;line-height:1;color:var(--dem)}
+.meter{height:10px;border-radius:5px;background:var(--rep);overflow:hidden;margin:8px 0 4px}
+.meter i{display:block;height:100%;background:var(--dem)}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;background:var(--bg)}
+.pill{display:inline-block;padding:1px 8px;border-radius:10px;font-size:.8rem;border:1px solid var(--line)}
+.up{border:2px dashed var(--mute);border-radius:10px;padding:14px;margin:12px 0;color:var(--mute)}
+details{border-top:1px solid var(--line);padding:10px 0}
+summary{cursor:pointer;font-weight:600}
+summary:focus-visible,button:focus-visible{outline:3px solid var(--dem);outline-offset:2px}
+.foot{font-size:.85rem;color:var(--mute);margin-top:30px}
+</style>
+</head>
+<body>
+<main>
+<h1>How US elections work</h1>
+<p class="sub">My reference page. Midterm Election Day is Tuesday, November 3, 2026. Results update planned for November 7.</p>
+
+<h2>Who controls Congress now</h2>
+<div class="card" id="control"></div>
+
+<h2>Kalshi odds for the midterms</h2>
+<div class="card">
+<div class="odds" id="odds"></div>
+<p class="leg" style="margin-top:12px">These are prediction-market prices, not facts. Odds at 90% still lose sometimes. Bar shows Democratic chance (blue) vs. Republican (red).</p>
+</div>
+
+<h2>After the results</h2>
+<div class="up" id="results">Final results will be added on November 7: House seats, Senate seats, and which party controls each chamber.</div>
+
+<h2>Congress, House and Senate</h2>
+<p><b>Congress</b> is the whole lawmaking body. The <b>House</b> and <b>Senate</b> are its two chambers. A bill must pass both in identical form, then the president signs or vetoes it. Congress can override a veto with a two-thirds vote.</p>
+<div class="wrap"><table>
+<tr><th></th><th>House</th><th>Senate</th></tr>
+<tr><td>Members</td><td>435</td><td>100 (two per state)</td></tr>
+<tr><td>Represents</td><td>A district, by population</td><td>A whole state, equally</td></tr>
+<tr><td>Term</td><td>2 years</td><td>6 years</td></tr>
+<tr><td>On the ballot</td><td>Every seat, every 2 years</td><td>About one-third, every 2 years</td></tr>
+<tr><td>Majority</td><td>218 seats</td><td>51 seats (50 plus the vice president's tie-break)</td></tr>
+<tr><td>Special powers</td><td>Revenue bills start here</td><td>Tries impeachments, approves treaties</td></tr>
+</table></div>
+
+<h2>What Democrats need</h2>
+<div class="card">
+<p><b>House:</b> 218 seats for a majority, about a net gain of 3 to 4 seats.</p>
+<p><b>Senate:</b> a net gain of 4 seats, to reach 51. Democrats must hold all 13 of their own seats up this year and flip 4 Republican-held ones.</p>
+<p class="leg">On the ballot: all 435 House seats, 35 Senate seats (22 Republican-held, 13 Democratic-held), and 36 governorships.</p>
+</div>
+
+<h2>Senate seats most likely to flip</h2>
+<p><b>Toss-up</b> is a forecaster's label for a race too close to call, with neither candidate clearly ahead. The other labels, from safest to closest, are Safe, Likely, Lean and Toss-up. The last column shows the Kalshi market's chance that the Democrat wins. For example, 71% means roughly 7 in 10, so the other candidate still wins about 3 times in 10.</p>
+<div class="wrap"><table>
+<tr><th>State</th><th>Held by</th><th>Race</th><th>Rating</th><th>Kalshi: Democrat wins</th></tr>
+<tr><td>North Carolina</td><td>R (open)</td><td>Cooper (D) vs. Whatley (R)</td><td><span class="pill">Likely D flip</span></td><td><b>96%</b></td></tr>
+<tr><td>Maine</td><td>R</td><td>Collins (R) vs. Jackson (D)</td><td><span class="pill">Toss-up</span></td><td><b>68%</b></td></tr>
+<tr><td>Ohio (special)</td><td>R</td><td>Husted (R) vs. Brown (D)</td><td><span class="pill">Toss-up</span></td><td><b>70%</b></td></tr>
+<tr><td>Alaska</td><td>R</td><td>Sullivan (R) vs. Peltola (D)</td><td><span class="pill">Toss-up</span></td><td><b>70%</b></td></tr>
+<tr><td>Iowa</td><td>R (open)</td><td>Hinson (R) vs. Turek (D)</td><td><span class="pill">Toss-up</span></td><td><b>42%</b></td></tr>
+<tr><td>Texas</td><td>R (open)</td><td>Paxton (R) vs. Talarico (D)</td><td><span class="pill">Toss-up</span></td><td><b>71%</b></td></tr>
+<tr><td>Kansas</td><td>R</td><td>Marshall (R)</td><td><span class="pill">Toss-up (Cook)</span></td><td><b>40%</b></td></tr>
+<tr><td>Michigan</td><td>D (open)</td><td>El-Sayed (D) vs. Rogers (R)</td><td><span class="pill">Toss-up / Lean D</span></td><td><b>75%</b></td></tr>
+<tr><td>New Hampshire</td><td>D (open)</td><td>Pappas (D) vs. Republican nominee</td><td><span class="pill">Toss-up / Lean D</span></td><td><b>89%</b></td></tr>
+</table></div>
+<p class="leg">Kalshi percentages are from late October (Oct 27 to 31) and move daily. Ratings differ by forecaster (Cook, Inside Elections and others). Iowa and Kansas show the Democrat's chance, so the Republican is the market favorite there.</p>
+
+<h2>Other things to remember</h2>
+<details open><summary>Midterm vs. presidential election</summary>
+<p>A midterm falls halfway through a president's term, with no presidential race. Turnout is lower (about 41% vs. 58% on average since 1972), and the president's party usually loses seats.</p></details>
+<details><summary>How the president is chosen</summary>
+<p>Voters choose electors state by state. There are 538 electors and a candidate needs 270. In 48 states and DC the statewide winner takes all electors. Maine and Nebraska split theirs by district. A candidate can win the presidency and lose the national popular vote, as in 2000 and 2016.</p></details>
+<details><summary>How governors are chosen</summary>
+<p>By direct statewide popular vote, with no Electoral College. Texas governors serve four years with no term limit. Greg Abbott (R) runs for a fourth term against Gina Hinojosa (D). The governor is a state job, not part of Congress.</p></details>
+<details><summary>Redistricting</summary>
+<p>Redistricting means redrawing House district lines. It normally happens once a decade, but this cycle several states redrew mid-decade. Texas redrew to make 5 more seats lean Republican (designed to move its 38 seats from 25R-13D to 30R-8D if voting matches 2024). California redrew in response to favor Democrats. The number of seats per state does not change until the next census. Voters still decide each seat.</p></details>
+<details><summary>India comparison</summary>
+<p>Lok Sabha (543, directly elected, up to 5 years) is like the House. Rajya Sabha (245, chosen by state legislators plus 12 nominated, 6 years) is like the Senate. India's Prime Minister is the leader of the Lok Sabha majority. The US president is elected separately and serves a fixed four years.</p></details>
+
+<p class="foot">Sources: Cook Political Report, Kalshi and DeFi Rate market data, NBC News, Al Jazeera, Ballotpedia, Cornell LII, National Archives. House and Senate counts come from news trackers and differ slightly on vacancies.</p>
+</main>
+<script>
+/* Edit this block on Nov 7. */
+var DATA={
+ asOf:"Oct 28, 2026",
+ house:{r:218,d:214,total:435,maj:218},
+ senate:{r:53,d:47,total:100,maj:51},
+ odds:{house:{d:92,asOf:"Oct 31"},senate:{d:69,asOf:"Oct 30"}}
+};
+var LAY=["AK . . . . . . . . . ME",". . . . . . . . . VT NH","WA ID MT ND MN IL WI MI NY RI MA","OR NV WY SD IA IN OH PA NJ CT .","CA UT CO NE MO KY WV VA MD DE .",". AZ NM KS AR TN NC SC . . .",". . . OK LA MS AL GA . . .","HI . . TX . . . FL . . ."];
+var HS={},SS={};
+/* state, Democrats, Republicans, independents (caucus with Republicans) */
+"AL 2 5|AK 0 1|AZ 3 6|AR 0 4|CA 43 8 1|CO 4 4|CT 5 0|DE 1 0|FL 7 20|GA 5 9|HI 2 0|ID 0 2|IL 14 3|IN 2 7|IA 0 4|KS 1 3|KY 1 5|LA 2 4|ME 2 0|MD 7 1|MA 9 0|MI 6 7|MN 4 4|MS 1 3|MO 2 6|MT 0 2|NE 0 3|NV 3 1|NH 2 0|NJ 9 3|NM 3 0|NY 19 7|NC 4 10|ND 0 1|OH 5 10|OK 0 5|OR 5 1|PA 7 10|RI 2 0|SC 1 6|SD 0 1|TN 1 8|TX 13 24|UT 0 4|VT 1 0|VA 6 5|WA 8 2|WV 0 2|WI 2 6|WY 0 1".split("|").forEach(function(q){var a=q.split(" ");HS[a[0]]=[+a[1],+a[2],+a[3]||0]});
+var SD="AZ CA CO CT DE GA HI IL MD MA MI MN NV NH NJ NM NY OR RI VA WA VT".split(" "),SM="WI PA ME".split(" ");
+Object.keys(HS).forEach(function(k){var d=SD.indexOf(k)>-1?2:SM.indexOf(k)>-1?1:0;SS[k]=[d,2-d,0]});
+var MAPD=(window.jsVectorMap&&jsVectorMap.maps)?(jsVectorMap.maps.us_aea_en||jsVectorMap.maps.us_merc_en||null):null;
+var CEN={},SMALL="VT NH MA CT RI NJ DE MD HI".split(" "),OFF={FL:[.7,.55],MI:[.72,.7],ID:[.5,.6],CA:[.42,.5],OK:[.55,.55],AK:[.45,.42],VA:[.55,.55],ME:[.5,.55]};
+function centers(){
+ var ns="http://www.w3.org/2000/svg",s=document.createElementNS(ns,"svg");
+ s.setAttribute("style","position:absolute;visibility:hidden;width:10px;height:10px");
+ document.body.appendChild(s);
+ Object.keys(MAPD.paths).forEach(function(k){
+  var p=document.createElementNS(ns,"path"),a=k.replace(/^US-/,"");
+  p.setAttribute("d",MAPD.paths[k].path);s.appendChild(p);
+  var b=p.getBBox(),f=OFF[a]||[.5,.5];
+  CEN[a]=[b.x+b.width*f[0],b.y+b.height*f[1]];
+ });
+ document.body.removeChild(s);
+}
+MAPD=null;
+/* Simplified state outlines: longitude (west) , latitude. */
+var GEO='WA:124.7,48.4 123.2,49 117,49 117,46 119,46 121.2,45.65 123,46.1 124,46.3 124.1,47.8;OR:124,46.3 123,46.1 121.2,45.65 119,46 117,46 117.1,44.3 117,42 124.2,42 124.5,43.8;CA:124.2,42 120,42 120,39 114.6,35 114.8,32.5 117.1,32.5 118.5,34 120.6,34.6 121.9,36.6 122.5,37.8 123.8,39.5 124.4,40.4;NV:120,42 114.05,42 114.05,36.2 114.7,36 114.6,35 120,39;AZ:114.05,37 109.05,37 109.05,31.3 111.07,31.3 114.8,32.5 114.6,35 114.7,36 114.05,36.2;UT:114.05,42 111.05,42 111.05,41 109.05,41 109.05,37 114.05,37;ID:117,49 116.05,49 116.05,48 114.5,46.6 113,44.8 111.05,44.5 111.05,42 114.05,42 117,42 117.1,44.3 117,46;MT:116.05,49 104.05,49 104.05,45 111.05,45 111.05,44.5 113,44.8 114.5,46.6 116.05,48;WY:111.05,45 104.05,45 104.05,41 111.05,41;CO:109.05,41 102.05,41 102.05,37 109.05,37;NM:109.05,37 103,37 103,32 106.6,32 106.5,31.8 108.2,31.8 108.2,31.3 109.05,31.3;TX:103,36.5 100,36.5 100,34.6 96.5,33.8 94.05,33.55 94.05,33 94,31 93.8,29.7 95,29.3 97,27.8 97.2,26 99.1,26.4 100.5,28.7 101.4,29.8 102.4,29.8 103.2,29 104.5,29.7 106.5,31.8 106.6,32 103,32;OK:103,37 94.6,37 94.4,35.4 94.05,33.55 96.5,33.8 100,34.6 100,36.5 103,36.5;KS:102.05,40 95.3,40 94.6,39.1 94.6,37 102.05,37;NE:104.05,43 98.5,43 96.5,42.5 96.1,41 95.3,40 102.05,40 102.05,41 104.05,41;SD:104.05,45.94 96.55,45.94 96.5,43.5 96.5,42.5 98.5,43 104.05,43;ND:104.05,49 97.2,49 96.8,47 96.55,45.94 104.05,45.94;MN:97.2,49 95.2,49 94.6,48.7 92,48.3 89.6,48 92.1,46.8 92.3,46.1 92.8,45.6 92.8,44.8 91.2,43.5 96.5,43.5 96.55,45.94 96.8,47;IA:96.5,43.5 91.2,43.5 90.6,42.5 90.2,41.8 91.1,41.2 91.4,40.4 95.8,40.6 96.1,41 96.5,42.5;MO:95.8,40.6 95.3,40 94.6,39.1 94.6,37 94.6,36.5 90.4,36.5 90.4,36 89.7,36 89.5,36.5 89.1,37 89.5,37.3 90.2,38.7 90.6,39 91.4,39.9 91.4,40.4;AR:94.6,36.5 90.4,36.5 90.4,36 89.7,36 90.1,35 91.1,33.8 91.2,33 94.05,33 94.05,33.55 94.4,35.4;LA:94.05,33 91.2,33 91.2,31 89.7,31 89.5,30.2 89.2,29.1 91,29.1 92.5,29.6 93.8,29.7 94,31;MS:91.2,33 91.1,33.8 90.1,35 88.2,35 88.4,31 88.4,30.4 89.5,30.2 89.7,31 91.2,31;AL:88.2,35 85.6,35 85.2,32.9 85,32 85,31 87.6,31 87.5,30.3 88.4,30.4 88.4,31;FL:87.6,31 85,31 84.9,30.7 82.2,30.6 81.5,30.7 81.3,29.9 80.6,28.4 80,26.8 80.4,25.2 81.1,25.1 81.8,26.1 82.7,27.6 82.7,28.9 83.7,29.9 85.3,29.7 86.5,30.4 87.5,30.3;GA:85.6,35 83.1,35 83.1,34.7 82.2,33.6 81.4,32.1 80.9,32 81.5,30.7 82.2,30.6 84.9,30.7 85,31 85,32 85.2,32.9;SC:83.1,35 82.4,35.2 81,35.2 80.8,34.8 79.7,34.8 78.5,33.9 79.2,33.2 80.9,32 81.4,32.1 82.2,33.6 83.1,34.7;NC:84.3,35 83.1,35 82.4,35.2 81,35.2 80.8,34.8 79.7,34.8 78.5,33.9 77.9,34 76.5,34.7 75.5,35.2 75.7,36.2 75.9,36.55 81.7,36.6 82,36.1 83.1,35.8;TN:89.5,36.5 88,36.5 86.5,36.65 83.7,36.6 81.7,36.6 82,36.1 83.1,35.8 84.3,35 85.6,35 88.2,35 90.1,35 89.7,36;KY:89.5,36.5 88,36.5 86.5,36.65 83.7,36.6 82,37.5 82.6,38.2 83.7,38.7 84.8,39.1 85.8,38.3 86.5,37.9 88.1,37.8 89.1,37;VA:83.7,36.6 81.7,36.6 75.9,36.55 76,37 76.3,37.9 77.3,38.4 77.7,39.3 78.4,39.4 79.5,38.5 80.3,37.5 81.7,37.2 82,37.5;WV:82,37.5 81.7,37.2 80.3,37.5 79.5,38.5 78.4,39.4 77.7,39.3 77.8,39.6 79.5,39.72 80.5,39.72 80.5,40.6 80.9,39.9 81.7,39.3 82.2,38.6 82.6,38.2;MD:79.5,39.72 75.8,39.72 75.8,38.45 75.05,38.45 75.9,37.95 76.3,37.9 77.3,38.4 77.7,39.3 77.8,39.6;DE:75.8,39.72 75.4,39.8 75.5,39.4 75.1,38.8 75.05,38.45 75.8,38.45;PA:80.5,39.72 75.8,39.72 75.4,39.8 74.8,40.2 75.1,40.9 75,41.35 75.3,42 79.76,42 79.76,42.27 80.5,42;NJ:75.4,39.8 74.8,40.2 75.1,40.9 75,41.35 74.7,41.35 73.9,40.9 74,40.2 74.1,39.7 74.9,38.95 75.5,39.4;NY:79.76,42.27 79.05,42.8 79.05,43.3 77.5,43.3 76.2,43.6 76.2,44.2 74.7,45 73.35,45 73.4,43.6 73.25,42.75 73.5,42.05 73.5,41.3 73.65,41 71.9,41.1 73.9,40.55 73.9,40.9 74.7,41.35 75,41.35 75.3,42 79.76,42;CT:73.5,42.05 71.8,42 71.85,41.3 73.65,41 73.5,41.3;RI:71.8,42 71.4,42 71.2,41.5 71.85,41.3;MA:73.25,42.75 72.45,42.73 71.3,42.7 70.8,42.85 70.6,42.3 70,42 70,41.7 70.7,41.55 71.2,41.5 71.4,42 71.8,42 73.5,42.05;VT:73.35,45 71.5,45 72,43.7 72.45,42.73 73.25,42.75 73.4,43.6;NH:71.5,45 71.1,45.3 70.7,43.1 70.8,42.85 71.3,42.7 72.45,42.73 72,43.7;ME:71.1,45.3 70.3,45.9 70,46.7 69.2,47.45 68.2,47.35 67.8,47.1 67.8,45.7 67,44.8 68.3,44.3 69.2,43.9 70.2,43.6 70.7,43.1;OH:84.8,41.7 83.5,41.7 82.7,41.5 81.7,41.5 80.5,42 80.5,40.6 80.9,39.9 81.7,39.3 82.2,38.6 82.6,38.2 83.7,38.7 84.8,39.1;IN:84.8,41.7 87.5,41.7 87.5,39.3 88.1,37.8 86.5,37.9 85.8,38.3 84.8,39.1;IL:87.5,41.7 87.8,42.5 90.6,42.5 90.2,41.8 91.1,41.2 91.4,40.4 91.4,39.9 90.6,39 90.2,38.7 89.5,37.3 89.1,37 88.1,37.8 87.5,39.3;WI:87.8,42.5 90.6,42.5 91.2,43.5 92.8,44.8 92.8,45.6 92.3,46.1 92.1,46.8 90.4,46.55 88.4,46 87.6,45.1 87.7,44;MI:90.4,46.55 88.4,46 87.6,45.1 86.5,45.8 84.8,45.9 84.6,46.5 86.5,46.6 87.9,47.4 89,46.9|86.8,41.7 84.8,41.7 83.5,41.7 83.1,42.1 82.4,43 82.6,44 83.5,43.7 83.3,45 84.7,45.8 85.5,45.2 86.3,44.7 86.5,43.6 86.3,42.6';
+var AKS='141,69.6 141,60.3 139,60 136.5,59 131,55 133.5,56.5 135.5,59 139.5,59.9 144,60 147,60.8 150,59.5 152,58.5 154.5,57 157.5,56 161,55.2 164.5,54.6 161.5,56.4 158.5,57.6 157.5,58.7 162,58.6 165.5,60.8 165,62.5 166.5,64 168,65.6 164,66.3 162.6,67 166.5,68.3 161.5,70.2 156.6,71.3 150,70.5';
+var HIS='156.05,20.25 155.1,19.9 154.8,19.5 155.6,18.95 156.05,19.7|156.7,20.95 156,20.85 156.3,20.6 156.7,20.75|158.3,21.6 157.7,21.3 158.1,21.3|159.8,22.2 159.3,22.2 159.5,21.9';
+function cen(g){var best=null,ba=0;g.forEach(function(q){var a=0,cx=0,cy=0;for(var i=0;i<q.length;i++){var p=q[i],m=q[(i+1)%q.length],f=p[0]*m[1]-m[0]*p[1];a+=f;cx+=(p[0]+m[0])*f;cy+=(p[1]+m[1])*f}if(Math.abs(a)>ba){ba=Math.abs(a);best=[cx/(3*a),cy/(3*a)]}});return best}
+function buildGeo(){
+ var R=Math.PI/180,N=(Math.sin(29.5*R)+Math.sin(45.5*R))/2,C=Math.pow(Math.cos(29.5*R),2)+2*N*Math.sin(29.5*R),R0=Math.sqrt(C-2*N*Math.sin(37.5*R))/N,S={},b=[1e9,1e9,-1e9,-1e9];
+ function pr(u){var o=Math.sqrt(C-2*N*Math.sin(u[1]*R))/N,t=N*(96-u[0])*R;return [o*Math.sin(t),o*Math.cos(t)-R0]}
+ function parse(s,f){return s.split('|').map(function(q){return q.trim().split(' ').map(function(c){var u=c.split(',');return f([+u[0],+u[1]])})})}
+ function bd(g,bb){g.forEach(function(q){q.forEach(function(p){bb[0]=Math.min(bb[0],p[0]);bb[1]=Math.min(bb[1],p[1]);bb[2]=Math.max(bb[2],p[0]);bb[3]=Math.max(bb[3],p[1])})})}
+ GEO.split(';').forEach(function(s){var a=s.split(':');S[a[0]]=parse(a[1],pr);bd(S[a[0]],b)});
+ var W=940,k=W/(b[2]-b[0]),H=Math.round((b[3]-b[1])*k)+12,P={},CE={};
+ function fin(id,g,tx){var gg=g.map(function(q){return q.map(tx)});P['US-'+id]={path:gg.map(function(q){return 'M'+q.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join('L')+'Z'}).join('')};CE[id]=cen(gg)}
+ function t48(p){return [(p[0]-b[0])*k,(p[1]-b[1])*k+6]}
+ Object.keys(S).forEach(function(id){fin(id,S[id],t48)});
+ CE.FL=t48(pr([81.7,28.3]));
+ var ak=parse(AKS,function(u){return [-u[0]*.7,-u[1]]}),ab=[1e9,1e9,-1e9,-1e9];bd(ak,ab);
+ var ka=100/(ab[3]-ab[1]);
+ fin('AK',ak,function(p){return [(p[0]-ab[0])*ka+12,(p[1]-ab[1])*ka+H-108]});
+ fin('HI',parse(HIS,function(u){return [-u[0],u[1]]}),function(p){return [(p[0]+160)*22+150,(22.6-p[1])*23+H-92]});
+ MAPD={width:W,height:H,paths:P};CEN=CE;
+}
+buildGeo();
+function mapSVG(get){
+ var W=MAPD.width,H=MAPD.height,EX=W*.14,bw=EX-8,p="",bx="",tx="",n=0;
+ Object.keys(MAPD.paths).forEach(function(k){
+  var s=k.replace(/^US-/,""),x=get(s);
+  if(!x)return;
+  var d=x[0],rp=x[1]+x[2],c=d>rp?"dm":rp>d?"rm":"tie",t=s+": "+d+" Democratic, "+rp+" Republican",l=d+"\u2013"+rp;
+  p+='<path class="st '+c+'" d="'+MAPD.paths[k].path+'"><title>'+t+'</title></path>';
+  if(SMALL.indexOf(s)>-1){
+   var y=20+n*52,cx=W+6+bw/2;n++;
+   bx+='<rect class="st '+c+'" x="'+(W+6)+'" y="'+y+'" width="'+bw+'" height="44" rx="6"><title>'+t+'</title></rect><text class="n" x="'+cx+'" y="'+(y+14)+'" font-size="12">'+s+'</text><text class="n" x="'+cx+'" y="'+(y+31)+'" font-size="16">'+l+'</text>';
+  }else if(CEN[s]){tx+='<text class="n" x="'+CEN[s][0]+'" y="'+(CEN[s][1]-9)+'" font-size="11">'+s+'</text><text class="n" x="'+CEN[s][0]+'" y="'+(CEN[s][1]+6)+'" font-size="16">'+l+'</text>'}
+ });
+ return '<div class="wrap"><svg class="usmap" viewBox="0 0 '+(W+EX)+' '+H+'" role="img" aria-label="Map of US states with Democratic and Republican seat counts">'+p+bx+tx+'</svg></div>';
+}
+function mapCard(name,get,maj){
+ var sd=0,sr=0,si=0,h="";
+ LAY.forEach(function(row){row.split(" ").forEach(function(s){
+  if(s=="."){h+="<div></div>";return}
+  var x=get(s),d=x[0],rp=x[1]+x[2];sd+=d;sr+=x[1];si+=x[2];
+  var c=d>rp?"dm":rp>d?"rm":"",t=s+": "+d+" Democratic, "+rp+" Republican";
+  h+='<div class="t '+c+'" title="'+t+'" aria-label="'+t+'"><small>'+s+'</small>'+d+'\u2013'+rp+'</div>';
+ })});
+ return '<div class="mh"><b>'+name+'</b><span class="tot"><span class="td">Dem '+sd+'</span> \u00b7 <span class="tr">Rep '+sr+(si?' (+'+si+' ind.)':'')+'</span></span></div>'+(MAPD?mapSVG(get):'<div class="map">'+h+'</div>')+'<div class="leg" style="margin-bottom:12px">'+maj+' needed for a majority</div>';
+}
+function bar(c,name,note){
+ var v=c.total,r=c.r/v*100,d=c.d/v*100;
+ return '<div class="row"><b><span>'+name+'</span><span class="leg">'+note+'</span></b></div>'+
+ '<div class="bar" role="img" aria-label="'+name+': '+c.r+' Republican, '+c.d+' Democratic"><i class="r" style="width:'+r+'%"></i><i class="d" style="width:'+d+'%;margin-left:auto"></i></div>'+
+ '<div class="leg"><span style="color:var(--rep)">Republicans '+c.r+'</span> · <span style="color:var(--dem)">Democrats '+c.d+'</span> · '+c.maj+' needed for a majority</div>';
+}
+document.getElementById("control").innerHTML=
+ mapCard("House (435 seats)",function(s){return HS[s]},DATA.house.maj)+
+ mapCard("Senate (100 seats)",function(s){return SS[s]},DATA.senate.maj)+
+ '<p class="leg" style="margin-top:12px">Numbers inside each state are Democrats\u2013Republicans, and the color shows who holds more seats there (purple is tied). Counts as of '+DATA.asOf+', before the election. House: 2 seats are vacant (TX-23 and FL-20), and the independent is Kevin Kiley of California, who votes with Republicans. Senate: Democrats include 2 independents. On a phone, swipe the map sideways to see all of it.</p>';
+function odd(t,o,note){
+ return '<div><div class="leg">'+t+'</div><div class="big">'+o.d+'%</div><div class="leg">chance Democrats win</div>'+
+ '<div class="meter" role="img" aria-label="Democrats '+o.d+' percent"><i style="width:'+o.d+'%"></i></div>'+
+ '<div class="leg">Kalshi, '+o.asOf+'. '+note+'</div></div>';
+}
+document.getElementById("odds").innerHTML=
+ odd("House",DATA.odds.house,"Needs 218 seats.")+
+ odd("Senate",DATA.odds.senate,"Needs 51 seats.");
+</script>
+</body>
+</html>
